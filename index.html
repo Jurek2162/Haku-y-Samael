@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haku y Samael</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="game-container">
+
+        <!-- Pantalla inicial -->
+        <section class="start-screen" id="startScreen">
+
+            <div class="start-hero">
+
+                <div class="hero-title">
+                    <span class="hero-badge">Juego educativo</span>
+                    <h1>Haku y Samael</h1>
+                    <p class="subtitle">Aprende, juega y gana en la aventura del conocimiento</p>
+                </div>
+
+                <div class="hero-banner">
+                    <img src="img/portada-haku-samael.png" alt="Haku y Samael" class="hero-banner-image">
+                </div>
+
+            </div>
+
+            <div class="start-panel">
+
+                <div class="player-form">
+                    <label for="playerName">Nombre del jugador</label>
+                    <input type="text" id="playerName" placeholder="Escribe tu nombre">
+                </div>
+
+                <p class="select-text">Elige tu personaje</p>
+
+                <div class="character-preview">
+
+                    <div class="character-card selectable-character"
+                         data-character="Haku"
+                         data-player="haku">
+                        <div class="character-card-top">
+                            <img src="img/haku-idle.png" alt="Haku" class="character-art">
+                        </div>
+                        <h2>Haku</h2>
+                        <p>Un pato blanco curioso y alegre que ama aprender.</p>
+                    </div>
+
+                    <div class="character-card selectable-character"
+                         data-character="Samael"
+                         data-player="samael">
+                        <div class="character-card-top">
+                            <img src="img/samael-idle.png" alt="Samael" class="character-art">
+                        </div>
+                        <h2>Samael</h2>
+                        <p>Un doberman valiente y protector que acepta cualquier reto.</p>
+                    </div>
+
+                </div>
+
+                <div class="start-buttons">
+                    <button id="startButton">Iniciar juego</button>
+                    <button id="instructionsButton" type="button">Ver instrucciones</button>
+                    <button id="musicButton" type="button">🎵 Música: OFF</button>
+                </div>
+
+            </div>
+
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <h2>🏆 Salón de campeones</h2>
+                    <button id="clearScoresButton" type="button">Borrar puntajes</button>
+                </div>
+
+                <div id="leaderboardList">
+                    <!-- Los puntajes se muestran con JavaScript -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Pantalla del juego -->
+        <section class="game-screen hidden" id="gameScreen">
+
+            <div class="game-header">
+                <h1>Haku y Samael</h1>
+                <p id="levelTitle">Nivel 1: Aventura del conocimiento</p>
+            </div>
+
+            <div class="board" id="board">
+
+                <svg class="route-svg" viewBox="0 0 1200 760">
+                    <polyline id="routePath"></polyline>
+                </svg>
+
+                <div class="board-center">
+                    <h2>Haku y Samael</h2>
+                    <h3>Aventura del conocimiento</h3>
+
+                    <h4>Indicaciones</h4>
+                    <p>Lanza el dado, responde correctamente y avanza.</p>
+                    <p>Si fallas, perderás puntos hasta encontrar la respuesta correcta.</p>
+                </div>
+
+            </div>
+
+            <div class="game-controls">
+                <button id="rollDiceButton">🎲 Tirar dado</button>
+                <p id="diceResult">Dado: -</p>
+            </div>
+
+            <div class="game-info">
+                <p><strong>Jugador:</strong> <span id="playerInfo">Sin seleccionar</span></p>
+
+                <p>
+                    <strong>Personaje:</strong>
+                    <span id="characterInfo">Sin seleccionar</span>
+                    <span id="characterPreview"></span>
+                </p>
+
+                <p><strong>Nivel:</strong> <span id="levelInfo">1</span></p>
+                <p><strong>Posición:</strong> <span id="positionInfo">1</span></p>
+                <p><strong>Puntaje:</strong> <span id="scoreInfo">0</span></p>
+            </div>
+
+        </section>
+
+        <!-- Modal de preguntas -->
+        <div class="question-modal hidden" id="questionModal">
+            <div class="question-box">
+                <h2 id="questionCategory">Pregunta</h2>
+                <p id="questionText">Aquí aparecerá la pregunta.</p>
+
+                <div class="answer-options" id="answerOptions">
+                    <!-- Las respuestas se crean con JavaScript -->
+                </div>
+
+                <p id="questionFeedback"></p>
+            </div>
+        </div>
+
+        <!-- Modal de nivel completado -->
+        <div class="level-modal hidden" id="levelModal">
+            <div class="level-box">
+                <h2 id="levelModalTitle">Nivel completado</h2>
+                <p id="levelModalText">Has terminado el nivel.</p>
+
+                <div class="level-buttons">
+                    <button id="nextLevelButton">Pasar al siguiente nivel</button>
+                    <button id="restartGameButton">Jugar otra vez</button>
+                    <button id="backHomeButton">Volver al inicio</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de instrucciones -->
+        <div class="instructions-modal hidden" id="instructionsModal">
+            <div class="instructions-box">
+                <h2>¿Cómo jugar?</h2>
+
+                <div class="instructions-content">
+                    <p>🎲 Tira el dado para saber cuántas casillas puedes avanzar.</p>
+                    <p>📚 Antes de avanzar, responde una pregunta educativa.</p>
+                    <p>✅ Si respondes bien, avanzas y ganas puntos.</p>
+                    <p>❌ Si respondes mal, pierdes puntos y debes intentar otra respuesta.</p>
+                    <p>🏁 Llega a la meta para completar el nivel.</p>
+                    <p>🏆 Tus puntajes se guardan en este dispositivo.</p>
+                </div>
+
+                <button id="closeInstructionsButton" type="button">Entendido</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="game.js"></script>
+</body>
+</html>
